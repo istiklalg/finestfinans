@@ -1,0 +1,55 @@
+
+{% extends 'base.html' %}
+
+
+{% block baslik %} Haberlerde "{{query}}" araması sonuçları - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+{% if query %}
+
+<div class="container">
+    <div class="row">
+
+    {% for haber in haberler %}
+        <div class="col-lg-12">
+            <div class="card my-2 shadow">
+                <div class="thumbnail"><img src="{{ haber.images.url }}" class="d-block w-100"> </div>
+                <div class="card-header">{{ haber.title|truncatechars:200 }}</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ haber.subtitle|safe|truncatechars:200 }}</li>
+                    <li class="list-group-item">{{ haber.content|safe|truncatechars:200 }}</li>
+                    <li class="list-group-item"><small>{{ haber.publishing_date }}</small></li>
+                </ul>
+                <p>
+                    <hr>
+                    <a href="{{ haber.get_absolute_url }}" class="btn btn-outline-success btn-sm" role="button"><small>İNCELE</small></a>
+                    {% if haber.link %}
+                    <a href="{{ haber.link }}" class="btn btn-outline-primary btn-sm" role="button"><small>{{haber.button}}</small></a>
+                    {% endif %}
+
+                </p>
+            </div>
+        </div><!-- {{haber.title}} -->
+    {% endfor %}
+
+    </div>
+</div>
+{% else %}
+
+    {{icerik|safe}}
+
+    {% for a in tablo %}
+
+        <div>{{a|safe}}</div>
+
+    {% endfor %}
+
+{% endif %}
+{% endblock %}
+
+
+
+
+
+

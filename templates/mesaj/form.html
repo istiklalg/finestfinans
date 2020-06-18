@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block baslik %} {{ title }} - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+<div class="container" name="message_to_us">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h1> {{ title }} </h1>
+                <hr>
+                {% crispy form %}
+            </form>
+            <hr>
+        </div>
+    </div>
+</div>
+
+{% if mailimiz != '' %}
+
+    <div class="container" name="mail_to_us">
+        <div class="row justify-content-center">
+            <div class="col-md-8 bg-info text-light">
+                <hr>
+                <h2 align="left">E-posta adresimiz : </h2>
+                <h2 align="right"> {{ mailimiz }}</h2>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+{% elif telefonumuz != '' %}
+
+    <div class="container" name="call_us">
+        <div class="row justify-content-center">
+            <div class="col-md-8  bg-info text-light">
+                <h2 align="left">Telefon numaramız :</h2>
+                <h2 align="right"> {{ telefonumuz }}</h2>
+            <hr>
+            </div>
+         </div>
+    </div>
+
+{% endif %}
+
+{% endblock %}

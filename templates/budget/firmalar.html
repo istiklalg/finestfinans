@@ -1,0 +1,50 @@
+
+{% extends 'base.html' %}
+
+{% block baslik %} Tüm Kayılarımın Listesi - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+<div class="container">
+    <div class="row">{{ note }}</div>
+    <div class="row">
+    {% for budget in sample %}
+          <div class="col-sm-12 col-md-6 col-lg-6">
+              <div class="card shadow my-3">
+                <div class="card-header">{{ budget.tax_title|truncatechars:50 }}</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">VKN : {{ budget.tax_number }}</li>
+                    {% if request.user.is_superuser %}
+                        <li class="list-group-item text-muted"><small class="text-secondary">KAYDEDEN KULLANICI : {{ budget.user.username }}</small></li>
+                    {% endif %}
+                </ul>
+                  <p>
+                      <hr>
+                      <a href="{{ budget.get_lists_url }}" class="btn btn-outline-info" role="button"><small>FİRMA MALİ VERİLERİ</small></a>
+                  </p>
+              </div>
+          </div>
+    {% endfor %}
+    </div>
+    <hr>
+    <div class="pagination">
+        <span class="step-links">
+            {% if sample.has_previous %}
+                <a href="?page=1">&laquo; İlk Sayfa </a>/
+                <a href="?page={{ sample.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"> önceki </a>/
+            {% endif %}
+
+            <span class="current">
+                <i>{{ sample.paginator.num_pages }} sayfadan {{ sample.number }}. si</i>
+            </span>
+
+            {% if sample.has_next %}
+                /<a href="?page={{ sample.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"> sonraki </a>
+                /<a href="?page={{ sample.paginator.num_pages }}"> Son Sayfa &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,249 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block baslik %}  {% if secildi %}{{ grup }} şirketler grubu {{ secilen_donem }} dönem tekli spread
+                    {% else %}{{ budget.tax_title }} - {{ budget.period }} dönem tekli spread
+                    {% endif %}- {{ block.super }}{% endblock %}
+
+{% block govde %}
+<div class="container-fluid">
+	<div class="row justify-content-center">
+        {% if secildi %}
+        <h5> {{ grup }} <small> şirketler grubunun {{ secilen_donem }} dönemi spread özet tablosu
+                                (toplam {{ sayi }} şirket)</small></h5>
+        {% else %}
+        <h5> {{ budget.tax_title }} <small> firmasının {{ budget.period }} dönemi spread özet tablosu</small></h5>
+        {% endif %}
+	</div>
+</div>
+<hr>
+<div class="container-fluid" align="center" name="tekli_spread">
+	<div class="row">
+<!--        Aktife ait tablo kolonu-->
+		<div class="col-lg-6">
+            <table class="table-hover col-lg-12">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Aktif<hr></th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+
+            {% for x, y in AT %}
+                {% if forloop.counter == 9 or forloop.counter == 14 or forloop.counter == 15 or forloop.counter == 33 or forloop.counter == 35 %}
+                    <tbody>
+                        <td bgcolor="lightgrey">{{ x }}</td>
+                        <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                    </tbody>
+                {% elif forloop.counter == 36 %}
+                    <tbody>
+                        <td bgcolor="grey">{{ x }}</td>
+                        <td bgcolor="grey" align="right">{{ y }}</td>
+                    </tbody>
+                {% else %}
+                    <tbody>
+                        <td>{{ x }}</td>
+                        <td align="right">{{ y }}</td>
+                    </tbody>
+                {% endif %}
+            {% endfor %}
+
+            </table>
+            <hr>
+        </div>
+
+<!--        Pasife ait tablo kolonu-->
+        <div class="col-lg-6">
+            <table class="table-hover col-lg-12">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Pasif<hr></th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+
+            {% for x, y in PT %}
+                {% if forloop.counter == 14 or forloop.counter == 24 or forloop.counter == 25 or forloop.counter == 35 %}
+                    <tbody>
+                        <td bgcolor="lightgrey">{{ x }}</td>
+                        <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                    </tbody>
+                {% elif forloop.counter == 36 %}
+                    <tbody>
+                        <td bgcolor="grey">{{ x }}</td>
+                        <td bgcolor="grey" align="right">{{ y }}</td>
+                    </tbody>
+                {% else %}
+                    <tbody>
+                        <td>{{ x }}</td>
+                        <td align="right">{{ y }}</td>
+                    </tbody>
+                {% endif %}
+            {% endfor %}
+
+            </table>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+<!--    Boş Satır-->
+        <hr>
+    </div>
+</div>
+
+<div class="container-fluid" align="center" name="tekli_spread">
+    <div class="row">
+<!--        Gelir Tablosuna ait tablo kolonu-->
+		<div class="col-lg-6">
+            <table class="table-hover col-lg-12">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Gelir Tablosu<hr></th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+
+            {% for x, y in GT %}
+            {% if forloop.counter == 4 or forloop.counter == 9 or forloop.counter == 23 %}
+            <tbody>
+                <td bgcolor="lightgrey">{{ x }}</td>
+                <td bgcolor="lightgrey" align="right">{{ y }}</td>
+            </tbody>
+            {% elif forloop.counter == 28 %}
+            <tbody>
+                <td bgcolor="grey">{{ x }}</td>
+                <td bgcolor="grey" align="right">{{ y }}</td>
+            </tbody>
+            {% else %}
+            <tbody>
+                <td>{{ x }}</td>
+                <td align="right">{{ y }}</td>
+            </tbody>
+            {% endif %}
+            {% endfor %}
+
+            </table>
+        </div>
+
+<!--        Oran analizine ait tablo kolonu-->
+        <div class="col-lg-6">
+            <table class="table-hover col-lg-12">
+            <thead class="thead-dark" align="center">
+                <tr>
+                    <th scope="col">ORANLAR<hr></th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            </table>
+            <table class="table-hover col-lg-8">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">{{ O.fg }}<hr></th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+
+            {% for x, y in FG %}
+            <tbody>
+                <td>{{ x }}</td>
+                <td align="right">{{ y }}</td>
+            </tbody>
+            {% endfor %}
+
+            <tbody>
+                <td><hr></td>
+                <td> </td>
+            </tbody>
+            </table>
+            <table class="table-hover col-lg-8">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">{{ O.ag }}<hr></th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+
+            {% for x, y in AG %}
+            <tbody>
+                <td>{{ x }}</td>
+                <td align="right">{{ y }}</td>
+            </tbody>
+            {% endfor %}
+
+            <tbody>
+                <td><hr></td>
+                <td> </td>
+            </tbody>
+            </table>
+            <table class="table-hover col-lg-8">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">{{ O.kg }}<hr></th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+
+            {% for x, y in KG %}
+            <tbody>
+                <td>{{ x }}</td>
+                <td align="right">{{ y }}</td>
+            </tbody>
+            {% endfor %}
+
+            <tbody>
+                <td><hr></td>
+                <td> </td>
+            </tbody>
+            </table>
+            <table class="table-hover col-lg-8">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col"><hr></th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                <td>{{ O.nis }}</td>
+                <td align="right">{{ nis }}</td>
+            </tbody>
+            <tbody>
+                <td>{{ O.mg1 }}</td>
+                <td align="right">{{ mg1 }} %</td>
+            </tbody>
+            <tbody>
+                <td><hr></td>
+                <td> </td>
+            </tbody>
+            </table>
+    </div>
+    </div>
+</div>
+
+<div class="container-fluid" align="center">
+    <div class="row">
+        {% if secildi %}
+        <div class="col-lg-6">
+            <a href="{{ budget.get_group_url }}" class="btn btn-outline-success  btn-sm" role="button">&laquo;   GRUP LİSTESİNE DÖN</a>
+        </div>
+        {% else %}
+        <div class="col-lg-6">
+            <a href="{{ budget.get_absolute_url }}" class="btn btn-outline-success  btn-sm" role="button">&laquo;   DETAY BİLGİLERE DÖN</a>
+            <a href="{{ budget.get_analysis_url }}" class="btn btn-outline-warning  btn-sm" role="button">GÖRÜŞ / YORUM ve BİLGİLER</a>
+            <a href="{{ budget.get_report_url }}" class="btn btn-outline-primary btn-sm" role="button">RAPOR GÖRÜNTÜLE</a>
+        </div>
+        <div class="col-lg-6">
+            <a href="{{ budget.get_lists_url }}" class="btn btn-outline-success  btn-sm" role="button"> FİRMA MALİ VERİ LİSTESİNE GİT   &raquo;</a>
+        </div>
+        {% endif %}
+    </div>
+<!--    <div class="row justify-content-center">-->
+<!--        <hr>-->
+<!--            <a href="{{ budget.get_pdf_url }}" class="btn btn-outline-danger  btn-sm" role="button"> PDF</a>-->
+<!--        <hr>-->
+<!--    </div>-->
+</div>
+{% endblock %}
+

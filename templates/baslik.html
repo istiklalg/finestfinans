@@ -1,0 +1,124 @@
+
+{% load static %}
+
+<style>
+  .navbar {
+    opacity: 0.85;
+    border-bottom: 1px solid #adb5bd;
+  }
+  div#logoutconfirm {
+    opacity: 0.85;
+    border: 1px solid #adb5bd;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#hedef"
+                    aria-controls="hedef" aria-expanded="false">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand" href="{% url 'accounts:admin' %}">
+      <img src="{% static 'img/LOGOO_xs.jpg' %}"><br>
+      <small>{{ user.get_username }}</small></br>
+    </a>
+      {# href tanımlarken url ve o path için name olarak verdiğimiz isim kısmını yazmamız yeterli #}
+
+
+    <div class="collapse navbar-collapse" id="hedef">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">{# navbar butonları #}
+      <li {% if request.path == '/' or 'haber' in request.path %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+        <a class="nav-link" href="{% url 'home' %}">Anasayfa</a>  {# bu url projenin url dosyasında var #}
+      </li>
+
+      <li {% if 'bilanco/create' in request.path %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+        {% if request.user.is_authenticated %}
+        <a class="nav-link" href="{% url 'budget:create' %}">Yeni Kayıt</a> {# url 'app adı:path adı' yazdık #}
+        {% endif %}
+      </li>
+
+      <li {% if 'bilanco/gruplar' in request.path %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+        {% if request.user.is_authenticated %}
+        <a class="nav-link" href="{% url 'budget:groups' %}">Gruplar</a> {# url 'app adı:path adı' yazdık #}
+        {% endif %}
+      </li>
+
+      <li {% if 'firmalar' in request.path %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+        {% if request.user.is_authenticated %}
+        <a class="nav-link" href="{% url 'budget:companies' %}">Firmalar</a> {# url 'app adı:path adı' yazdık #}
+        {% endif %}
+      </li>
+
+      <li {% if 'bilanco/index' in request.path %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+        {% if request.user.is_superuser %}
+        <a class="nav-link" href="{% url 'budget:index' %}">Tüm Kayıtlar</a>
+        {% endif %}
+      </li>
+
+      <li {% if 'about_us' in request.path %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+        <a class="nav-link" href="{% url 'haber:about_us' %}">Hakkımızda</a>
+      </li>
+
+      <li {% if 'mesaj/create' in request.path %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+        <a class="nav-link" href="{% url 'mesaj:create' %}">Bize Ulaş</a>
+      </li>
+
+      <li  {% if 'register' in request.path %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+        {% if not request.user.is_authenticated %}
+        <a class="nav-link" href="{% url 'accounts:register' %}">Üye Ol</a>  {# adres olarak accounts app sindeki #}
+        {% endif %}                                                          {# register isimli url yi verdik #}
+      </li>
+
+      <li  {% if 'login' in request.path %} class="nav-item active" {% else %} class="nav-item" {% endif %}>
+        {% if not request.user.is_authenticated %}
+        <a class="nav-link" href="{% url 'accounts:login' %}">Giriş Yap</a>  {# adres olarak accounts app sindeki #}
+        {% endif %}                                                          {# logout isimli url yi verdik #}
+      </li>
+
+      <li class="nav-item">
+        {% if request.user.is_authenticated %}
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutconfirm">Çıkış</a>
+        {% endif %}
+      </li>
+    </ul>{# /navbar butonları #}
+
+<!--    <small>Sosyal Medya Hesaplarımız  . </small>-->
+    <a class="navbar-brand" href="https://www.facebook.com/finans.icin.danismak.lazim/" target="_blank" data-toggle="tooltip" title="Finest_Finans on Facebook">
+    <small><img src="{% static 'img/Facebook_5.png' %}" class="rounded-circle"></small>
+    </a>
+    <a class="navbar-brand" href="https://www.instagram.com/finestfinans/" target="_blank" data-toggle="tooltip" title="@finestfinans on Instagram">
+      <small><img src="{% static 'img/Instagram_5.png' %}" class="rounded-circle"></small>
+    </a>
+    <a class="navbar-brand" href="https://www.linkedin.com/company/finest-finansal-danışmanlık/" target="_blank" data-toggle="tooltip" title="finest-finansal-danışmanlık on Linkedin">
+      <small><img src="{% static 'img/Linkedin_5.png' %}" class="rounded-circle"></small>
+    </a>
+<!--  .-->
+
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" name="q" placeholder="Sitede Ara" value="{{ request.GET.q }}" aria-label="search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">ARA</button>
+    </form>
+
+  </div>
+
+</nav>
+
+<div class="modal fade" id="logoutconfirm">{# çıkış için onay kutusu #}
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-light">
+                <h5 class="modal-title">Çıkmak mı istiyorsunuz?</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight:bold;">{{ user.get_full_name }} çıkış butonuna bastınız, çıkmak istiyor musunuz? Tekrar soralım istedik :)</p>
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'accounts:logout' %}" class="btn btn-outline-info btn-sm" name="logout"
+                   role="button">EVET SONRA GÖRÜŞÜRÜZ</a>
+                <button class="btn btn-outline-danger btn-sm" type="button" data-dismiss="modal" name="logoutcancel">HAYIR YANLIŞLIKLA BASTIM</button>
+            </div>
+        </div>
+    </div>
+</div>{# /çıkış için onay kutusu #}

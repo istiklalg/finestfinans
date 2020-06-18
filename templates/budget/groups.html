@@ -1,0 +1,54 @@
+
+
+{% extends 'base.html' %}
+
+{% block baslik %}{% if vergi %}{{ vergi }}{% elif grup %}{{ grup }}{% endif %} - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+
+{% if secildi %}
+    {{grup}} şirketler grubu için seçim yapıldı, seçilen ({{secim}}) dönem : {{ secilen_donem }}<hr>
+    {% for a in secilen %}
+        <br>{{ forloop.counter }} - {{ a.tax_title }} / {{ a.period }} / {{ a.user }} / {{ a.id }}<br>
+    {% endfor %}
+{% else %}
+    <div class="container">
+        <form action="/bilanco/{{slug}}/grup_spread/" method="POST">
+        {% csrf_token %}
+            <div class="row">
+            {% if grup %}<h5> {{ grup }} <small> grubu şirketleri</small></h5>{% endif %}
+            <table class="table table-hover col-lg-12">
+            {% for donem in donemler %}
+
+
+                        <thead class="thead-dark">
+                        <tr>
+                        <th scope="col"> Dönem : {{ donem.0.period }}</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"><input type="checkbox" value="{{ forloop.counter }}" name="radio"/></th>
+                        </tr>
+                        </thead>
+                {% for budget in donem %}
+                        <tbody>
+                        <td>{{ budget.period }}</td>
+                        <td>{{ budget.tax_title }}</td>
+                        <td>{{ budget.saving_date }}</td>
+                        {% if budget.files %}<td>Ek : {{ budget.files }}</td>{% else %}<td>Ek Yok</td>{% endif %}
+                        </tbody>
+                {% endfor %}
+            {% endfor %}
+            </table>
+            </div>
+            <a href="{% url 'budget:groups' %}" class="btn btn-outline-success  btn-sm" role="button">&laquo;    GRUPLARA DÖN</a>
+            {% for budget in donemler.0 %}
+            <a href="{{ budget.get_lists_url }}" class="btn btn-outline-secondary  btn-sm" role="button">{{ budget.tax_title }} Mali veri listesi</a>
+            {% endfor %}
+            <input type="submit" role="button" class="btn btn-outline-primary  btn-sm" value="GRUP SPRED ÇEK &raquo">
+        </form>
+        <hr>
+    </div>
+{% endif %}
+{% endblock %}

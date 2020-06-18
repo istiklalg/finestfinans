@@ -1,0 +1,254 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr-TR">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width inital-scale=1">
+    <title>{% block baslik %} {{ aktif_kisi.get_full_name }} için hesap yönetim paneli {% endblock %}</title>
+    <link rel="icon" href="{% static 'img/favicon4.png' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+    {% include 'baslik.html' %}
+    {% include 'messages.html' %}
+
+    <div class="container-fluid"><!-- panel başlığı -->
+        <div class="row"><!-- panel satırı -->
+            <div class="col-lg-12">
+                <h5 class="float-left text-success"><u>HESAP YÖNETİM PANELİ</u><br><br>İsim : {{ aktif_kisi.get_full_name }} <br>
+                    Kullanıcı adı : {{ aktif_kisi.username }}<br></h5>
+
+                <h5 class="float-right"><a href="{% url 'accounts:change' %}">Şifre Değiştir</a>
+                        <br><a href="{% url 'accounts:update' %}">Kullanıcı Bilgileri Değiştir</a>
+                        {% if aktif_kisi.is_staff %}
+                            <br><a href="/admin" target="_blank">Django Admin Paneli</a>
+                        {% endif %}
+                        <br>E-posta : {{ aktif_kisi.email }}</h5>
+            </div>
+        </div><!-- /panel satırı -->
+    </div><!-- /panel başlığı -->
+    <hr>
+    <div class="container-fluid"><!-- tablolar taşıyıcısı -->
+        <div class="row"><!-- tüm içerik satırı -->
+            <div class="col-xl-6"><!-- sol sütunlar / left columns -->
+                <div class="row"><!--Girilen Mali veriler title-->
+                    <div class="col">
+                        <h5 class="float-left">Girilen mali veriler</h5>
+                        <h5 class="float-right"><a href="{% url 'budget:create' %}" title="Yeni Kayıt Oluştur">Yeni Ekle</a></h5>
+                    </div>
+                </div><!--/Girilen Mali veriler title-->
+                <div class="row"><!--Girilen Mali veriler-->
+                    <table class="table table-sm table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#id</th>
+                                <th scope="col">Firma Ünvanı</th>
+                                <th scope="col">Grubu</th>
+                                <th scope="col">Vergi No</th>
+                                <th scope="col">Kullanıcı</th>
+                                <th scope="col">Dönemi</th>
+                                <th scope="col">Kayıt Tarihi</th>
+                            </tr>
+                        </thead>
+
+                        {% for budget in budgets %}
+                        <tbody>
+                            <td>{{ budget.id }}</td>
+                            <td><a href="{{ budget.get_basetable_url }}" title="Detayı Gör">{{ budget.tax_title }}</a></td>
+                            <td><a href="{{ budget.get_group_url }}" title="Grubu Gör">{{ budget.grup_ismi }}</a></td>
+                            <td>{{ budget.tax_number }}</td>
+                            <td>{{ budget.user }}</td>
+                            <td>{{ budget.period }}</td>
+                            <td>{{ budget.saving_date }}</td>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                    Toplam Girdi Sayısı : {{ budget_adet }}
+                </div><!--/Girilen Mali veriler-->
+                <hr>
+            </div><!-- /sol sütunlar / left columns -->
+
+            <div class="col-xl-6"><!-- sağ sütunlar / right columns-->
+                {% if aktif_kisi.is_superuser %}
+                    <div class="row"><!--İçerik Yayınları title-->
+                        <div class="col-lg-12">
+                            <h5 class="float-left">Yayındaki Haberler</h5>
+                            <h5 class="float-right"><a href="{% url 'haber:create' %}" title="Yayın için içerik ekle">Yeni Ekle</a></h5>
+                        </div>
+                    </div><!--/İçerik Yayınları title-->
+                    <div class="row"><!--İçerik Yayınları-->
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">id #</th>
+                                    <th scope="col">Başlık</th>
+                                    <th scope="col">Yayın Yeri</th>
+                                    <th scope="col">Resim</th>
+                                    <th scope="col">Link</th>
+                                </tr>
+                            </thead>
+
+                            {% for haber in haberler %}
+                            <tbody>
+                                <td><a href="{{ haber.get_update_url }}" title="Güncelle">{{ haber.id }}</a></td>
+                                <td><a href="{{ haber.get_absolute_url }}" title="Detay Gör">{{ haber.title }}</a></td>
+                                <td>{{ haber.konum }},{{ haber.position }}</td>
+                                {% if haber.images %}
+                                <td><a href="{{ haber.images.url }}" title="Resmi Gör">{{ haber.images }}</a></td>
+                                {% else %}
+                                <td> </td>
+                                {% endif %}
+                                {% if haber.link %}
+                                <td><a href="{{ haber.link }}" title="Linke Git">Link</a></td>
+                                {% else %}
+                                <td> </td>
+                                {% endif %}
+                            </tbody>
+                            {% endfor %}
+
+                        </table>
+                        Toplam Haber Sayısı: {{ haber_adet }}
+                    </div><!--/İçerik Yayınları-->
+                <hr>
+                <hr>
+                    <div class="row"><!--Kayıtlı Kullanıcılar title-->
+                        <div class="col-lg-12">
+                            <h5 class="float-left">Kayıtlı Kullanıcılar</h5>
+                            <h5 class="float-right"><a href="{% url 'accounts:register' %}">Yeni Ekle</a></h5>
+                        </div>
+                    </div><!--/Kayıtlı Kullanıcılar title-->
+
+                    <div class="row"><!--Kayıtlı Kullanıcılar-->
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Kullanıcı Adı</th>
+<!--                                    <th scope="col">Grubu</th>-->
+                                    <th scope="col">Ad</th>
+                                    <th scope="col">Soyad</th>
+                                    <th scope="col">E-posta</th>
+                                    <th scope="col">Son Giriş</th>
+                                </tr>
+                            </thead>
+
+                            {% for insan in kisiler %}
+                            <tbody>
+                                <td>{{ insan.username }}</td>
+<!--                                <td>{{ grup.name }}</td>-->
+                                <td>{{ insan.first_name }}</td>
+                                <td>{{ insan.last_name }}</td>
+                                <td>{{ insan.email }}</td>
+                                <td>{{ insan.last_login }}</td>
+                            </tbody>
+                            {% endfor %}
+
+                        </table>
+                        Toplam Kullanıcı Sayısı : {{ kisi_adet }}
+
+                    </div><!--/Kayıtlı Kullanıcılar-->
+                <hr>
+                    <div class="row"><!--Kullanıcı Grupları title-->
+                        <div class="col-lg-12">
+                            <h5 class="float-left">Kullanıcı Grupları</h5>
+<!--                            <h5 class="float-right"><a href="{% url 'accounts:register' %}">Yeni Ekle</a></h5>-->
+                        </div>
+                    </div><!--/Kullanıcı Grupları title-->
+
+                    <div class="row"><!--Kullanıcı Grupları-->
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">#id</th>
+                                    <th scope="col">Grup adı</th>
+                                    <th scope="col">Giriş Sınırı</th>
+                                    <th scope="col">Kullanıcılar</th>
+<!--                                    <th scope="col">E-posta</th>-->
+<!--                                    <th scope="col">Son Giriş</th>-->
+                                </tr>
+                            </thead>
+
+                            {% for grup in gruplar %}
+                            <tbody>
+                                <td>{{ grup.id }}</td>
+                                <td>{{ grup.name }}</td>
+                                <td>{% if grup.name == 'freemium' %}3
+                                    {% elif grup.name == 'customer' %}5
+                                    {% elif grup.name == 'customer_plus' %}6
+                                    {% else %}YOK
+                                    {%endif%}</td><!--/Entry limits-->
+                                <td>{% for x, y in kisi_grup %}
+                                        {% if y == grup %}
+                                    <li>{{ x.username }}  <small class="text-warning">(Üyelik : {{ x.date_joined }})</small></li>
+                                        {%endif%}
+                                    {%endfor%}</td><!--/Users for this group-->
+<!--                                <td>{{ insan.email }}</td>-->
+<!--                                <td>{{ insan.last_login }}</td>-->
+                            </tbody>
+                            {% endfor %}
+
+                        </table>
+                        Grup Sayısı : {{ grup_adet }}
+
+                    </div><!--/Kullanıcı Grupları-->
+                <hr>
+                {% endif %}
+
+                    <div class="row"><!--Gelen Mesajlar title-->
+                        <div class="col-lg-12">
+                            <h5 class="float-left">Gelen Mesajlar</h5>
+                            <h5 class="float-right"><a href="{% url 'mesaj:create' %}">Yeni Ekle</a></h5>
+                        </div>
+                    </div><!--/Gelen Mesajlar title-->
+
+                    <div class="row"><!--Gelen Mesajlar-->
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">id #</th>
+                                    <th scope="col">Kullanıcı Adı</th>
+                                    <th scope="col">Konu</th>
+                                    <th scope="col">Tarih</th>
+                                    <th scope="col">E-posta</th>
+                                    <th scope="col">Belge</th>
+                                </tr>
+                            </thead>
+
+                            {% for mesaj in mesajlar %}
+                            <tbody>
+                                {% if aktif_kisi.is_superuser %}
+                                <td><a class="okundumu" href="{{ mesaj.get_update_url }}">{{ mesaj.id }}</a></td>
+                                {% else %}
+                                <td>{{ mesaj.id }}</td>
+                                {% endif %}
+                                <td>{{ mesaj.name }}</td>
+                                <td><a class="okundumu" href="{{ mesaj.get_absolute_url }}">{{ mesaj.title }}</a></td>
+                                <td>{{ mesaj.date }}</td>
+                                <td>{{ mesaj.email }}</td>
+                                {% if mesaj.files %}
+                                <td><a href="{{ mesaj.files.url }}">{{ mesaj.files }}</a></td>
+                                {% else %}
+                                <td> </td>
+                                {% endif %}
+                            </tbody>
+                            {% endfor %}
+
+                        </table>
+                        Toplam Mesaj Sayısı : {{ mesaj_adet }}
+
+                    </div><!--/Gelen Mesajlar-->
+                <hr>
+            </div><!-- /sağ sütunlar / right columns-->
+
+        </div><!-- /tüm içerik satırı -->
+    </div><!-- /tablolar taşıyıcısı -->
+    <hr>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+<footer>
+    {% include 'footer.html' %}
+</footer>
+</html>

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block baslik %} {{ budget.tax_title }} {% endblock %}
+
+
+{% block govde %}
+
+<div class="container-fluid" name="detail">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="caption">
+                <h4>{{ budget.tax_title }}<small>  - {{ budget.id }}</small></h4>
+                <h5>{{ budget.period }} <small> dönemi mali veriler</small></h5>
+                <p>VKN : {{ budget.tax_number }}
+                  {% if budget.grup_ismi %} / GRUBU : {{ budget.grup_ismi }} şirketler grubu {% endif %}</p>
+
+                {% if sender == 'detay' %}
+                {% include 'budget/bilanco.html' %} {# detaylı kalem görünümü için #}
+                {% elif sender == 'tablo' %}
+                {% include 'budget/basetable.html' %} {# özet tablo görünümü için #}
+                {% endif %}
+
+                <p>{{ budget.saving_date }} Tarihinde kaydedilmiştir</p>
+                <p name="detay_buton_grubu"><!-- butonlar -->
+                    <a href="{% url 'budget:companies' %}" class="btn btn-outline-success  btn-sm" role="button"><small>FİRMALAR LİSTESİNE<br>DÖN</small></a>
+                    <a href="{{ budget.get_lists_url }}" class="btn btn-outline-success btn-sm" role="button"><small>FİRMA MALİ<br>VERİLERİNE DÖN</small></a>
+                    {% if sender == 'detay' %}
+                      <a href="{{ budget.get_basetable_url }}" class="btn btn-outline-primary  btn-sm" role="button"><small>TEMEL TABLO<br>GÖRÜNÜMÜ</small></a>
+                    {% elif sender == 'tablo' %}
+                      <a href="{{ budget.get_absolute_url }}" class="btn btn-outline-primary  btn-sm" role="button"><small>DETAYLI KALEM<br>GÖRÜNÜMÜ</small></a>
+                    {% endif %}
+                    <a href="{{ budget.get_spread_url }}" class="btn btn-outline-primary btn-sm" role="button"><small>SPREAD ÖZET<br>GÖRÜNTÜSÜ</small></a>
+                    <a href="{{ budget.get_report_url }}" class="btn btn-outline-primary btn-sm" role="button"><small>RAPOR<br>GÖRÜNTÜLE</small></a>
+                    {% if budget.files %}
+                    <a href="{{ budget.files.url }}" class="btn btn-outline-secondary btn-sm" role="button"><small>EKLİ DOSYA<br>GÖRÜNTÜLE</small></a>
+                    {% endif %}
+                    <a href="{{ budget.get_analysis_url }}" class="btn btn-outline-warning btn-sm" role="button"><small>GÖRÜŞ / YORUM<br> ve BİLGİLER</small></a>
+
+                    <button class="btn btn-warning btn-sm" name="update"
+                       role="button" data-toggle="modal" data-target="#updateconfirm">GÜNCELLE</button>
+
+                    <button class="btn btn-danger btn-sm" name="delete"
+                       role="button" title="Kaydı tamamen silmenizi sağlar!" data-toggle="modal" data-target="#deleteconfirm">KAYDI SİL !</button>
+
+                </p><!-- /butonlar -->
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateconfirm">{#güncellemek istenince gelen dialogbox#}
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h6 class="modal-title">{{ budget.tax_title }} için {{ budget.period }} dönemini <u>güncellemek istediniz</u></h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    {{ budget.saving_date }} tarihinde ({{ budget.saving_date|timesince }} önce)
+                    kaydetmiş olduğunuz mizan bilgileri üzerinde <b>güncelleme yapmak</b> istiyor musunuz?
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ budget.get_update_url }}" class="btn btn-outline-warning btn-sm" name="update"
+                       role="button"><small>GÜNCELLE</small></a>
+                    <button class="btn btn-outline-danger btn-sm" type="button" data-dismiss="modal"><small>VAZGEÇ</small></button>
+                </div>
+            </div>
+        </div>
+    </div>{#/güncellemek istenince gelen dialogbox#}
+    <div class="modal fade" id="deleteconfirm">{#silmek istenince gelen dialogbox#}
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h6 class="modal-title bg-grey">{{ budget.tax_title }} için {{ budget.period }} dönemini <u>silmek istediniz</u></h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    {{ budget.saving_date }} tarihinde ({{ budget.saving_date|timesince }} önce)
+                    kaydetmiş olduğunuz mizan bilgilerini <b>tümüyle silmek</b> istiyor musunuz?
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ budget.get_delete_url }}" class="btn btn-outline-danger btn-sm" name="delete"
+                       role="button"><small> SİL </small></a>
+                    <button class="btn btn-outline-success btn-sm" type="button" data-dismiss="modal"><small>VAZGEÇ</small></button>
+                </div>
+            </div>
+        </div>
+    </div>{#/silmek istenince gelen dialogbox#}
+</div>
+
+
+{% endblock %}
+

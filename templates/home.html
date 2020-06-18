@@ -1,0 +1,86 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block baslik %} Anasayfa - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+<div class="container display-4 my-2" align="center">
+    {% if user.is_authenticated %}{#{{ request.user.get_full_name }}#}Merhaba, {{request.user.first_name|truncatechars:15}}.{% endif %}
+    {% if not user.is_authenticated %}{{ today }}{% endif %}
+</div>
+
+  <link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+
+
+<main role="main">
+
+  <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel"><!-- carousel slider -->
+    <ol class="carousel-indicators">
+      {% for bilgi in S %}
+      <li data-target="#myCarousel" data-slide-to="{{bilgi.position}}" {%if bilgi.position == 0%}class="active"{%endif%}></li>
+      {% endfor %}
+    </ol>
+
+    <div class="carousel-inner">
+      {% for bilgi in S %}
+        <div {%if bilgi.position == 0%} class="carousel-item active" {%else%} class="carousel-item" {%endif%}>
+          {% include 'icons/yertut.html' %}
+            <img src="{{ bilgi.images.url }}" class="d-block w-100" alt="...">
+            <div class="container">
+              <div class="carousel-caption text-left">
+                <h2>{{ bilgi.title }}</h2>
+                <div class="d-none d-lg-block">
+                  <p>{{ bilgi.subtitle|safe }}</p>
+                </div>
+                <p><a class="btn btn-lg btn-warning btn-sm" href="{{ bilgi.get_absolute_url }}" role="button" target="_blank">{{ bilgi.button }} »</a></p>
+              </div>
+            </div>
+        </div>
+      {% endfor %}
+    </div>
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div><!-- carousel slider -->
+
+  <div class="container marketing"><!-- marketing and featurette-->
+
+    <div class="row"><!-- marketing -->
+      {% for bilgi in M %}
+        <div class="col-lg-3 col-md-3"><!-- {{bilgi.title}} -->
+          <img src="{{ bilgi.images.url }}" class="d-block w-100" alt="...">
+          <h5>{{bilgi.title}}</h5>
+          <div class="d-none d-lg-block"><p>{{ bilgi.subtitle|safe }}</p></div>
+          <p><a class="btn btn-secondary" href="{{ bilgi.link }}" role="button" target="_blank">{{ bilgi.button }} »</a></p>
+        </div><!-- /.col-lg-3 -->
+      {% endfor %}
+    </div><!-- /.row --><!-- marketing -->
+
+
+    <hr class="featurette-divider"><!-- featurette -->
+    {% for bilgi in F %}
+      <div class="row featurette">
+        <div {%if forloop.counter == 0 or forloop.counter == 2 or forloop.counter == 4 or forloop.counter == 6%} class="col-md-7 order-md-2" {%else%} class="col-md-7 order-md-1" {%endif%}>
+          <h2 class="featurette-heading">{{ bilgi.title|safe }}<br>
+            <div class="d-none d-lg-block"><span class="text-muted">{{ bilgi.subtitle|safe }}</span></div></h2>
+          <p><a class="btn btn-light" href="{{ bilgi.link }}" role="button" target="_blank">{{ bilgi.button }} »</a></p>
+        </div>
+        <div {%if forloop.counter == 0 or forloop.counter == 2 or forloop.counter == 4 or forloop.counter == 6%} class="col-md-5 order-md-1" {%else%} class="col-md-5 order-md-2" {%endif%}>
+          <img src="{{ bilgi.images.url }}" class="d-block w-100 rounded" alt="...">
+        </div>
+      </div>
+
+      <hr class="featurette-divider"><!-- featurette -->
+    {% endfor %}
+  </div><!-- /.container -->
+</main>
+{% endblock %}
+
+

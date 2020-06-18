@@ -1,0 +1,54 @@
+
+{% load i18n %}
+
+
+<div class="container" name="detay_kalem">
+  <h7><small>Para birimi     </small>    <b>TL</b></h7>
+  <div class="row mx-lg-n5 bg-light"><!--  TABLO BAŞLIĞI-->
+    <div class="col py-2 px-lg-1 border" align="Center"><h5>AKTİF</h5></div>
+    <div class="col py-2 px-lg-1 border" align="Center"><h5>PASİF</h5></div>
+    <div class="col py-2 px-lg-1 border" align="Center"><h5>GELİR TABLOSU</h5></div>
+  </div><!--  /TABLO BAŞLIĞI-->
+  <small><!-- TABLO İÇ SATIRLARI  -->
+
+  {% for x, y, z, t, u, w in DT %}
+  <div class="row mx-lg-n5"><!--  TABLO İÇERİĞİ  -->
+      {% if forloop.counter == 59 or forloop.counter == 133 %}
+          <div class="col-3 py-1 px-lg-1 border bg-light">{{ x }}</div>
+          <div class="col-1 py-1 px-lg-1 border bg-light" align="Right">{{ y }}</div>
+      {% else %}
+          <div class="col-3 py-1 px-lg-1 border">{{ x }}</div>
+          <div class="col-1 py-1 px-lg-1 border" align="Right">{{ y }}</div>
+      {% endif %}
+      {% if forloop.counter == 59 or forloop.counter == 75 or forloop.counter == 98 or forloop.counter == 133 %}
+          <div class="col-3 py-1 px-lg-1 border bg-light">{{ z }}</div>
+          <div class="col-1 py-1 px-lg-1 border bg-light" align="right">{{ t }}</div>
+      {% else %}
+          <div class="col-3 py-1 px-lg-1 border">{{ z }}</div>
+          <div class="col-1 py-1 px-lg-1 border" align="right">{{ t }}</div>
+      {% endif %}
+      {% if forloop.counter == 12 or forloop.counter == 32 or forloop.counter == 57 or forloop.counter == 70 or forloop.counter == 75 or forloop.counter == 87 %}
+          <div class="col-3 py-1 px-lg-1 border bg-light">{{ u }}</div>
+          <div class="col-1 py-1 px-lg-1 border bg-light" align="right">{{ w }}</div>
+      {% else %}
+          <div class="col-3 py-1 px-lg-1 border">{{ u }}</div>
+          <div class="col-1 py-1 px-lg-1 border" align="right">{{ w }}</div>
+      {% endif %}
+  </div><!--  /TABLO İÇERİĞİ  -->
+  {% endfor %}
+
+  </small><!--  /TABLO İÇ SATIRLARI  -->
+  <div class="row mx-lg-n5 bg-light"><!--  TABLO ALT TOPLAM SATIRI-->
+    <div class="col-3 py-1 px-lg-1 border" align="center">{{ M.01 }}</div>
+    <div class="col-1 py-1 px-lg-1 border" align="right"><small>{{ L01|floatformat:2 }}</small></div>
+
+    <div class="col-3 py-1 px-lg-1 border" align="center">{{ M.02 }}</div>
+    <div class="col-1 py-1 px-lg-1 border" align="right"><small>{{ L02|floatformat:2 }}</small></div>
+
+    <div class="col-3 py-1 px-lg-1 border" align="center">{{ M.6 }}</div>
+    <div class="col-1 py-1 px-lg-1 border" align="right"><small>{{ L6|floatformat:2 }}</small></div>
+  </div>  <!--  /TABLO ALT TOPLAM SATIRI-->
+</div>
+
+
+

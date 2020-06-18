@@ -1,0 +1,63 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block baslik %} {% if biz %}Hakkımızda {% else %}Haberler {% endif %}- {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+  {% if biz %}
+    <div class="container">
+      <div class="row">
+      {% for haber in biz %}
+        {% if haber.position == 0 %}
+              <div class="card col-lg-12 my-1"><!-- finest hakkında -->
+                <img src="{{haber.images.url}}" class="card-img-top" alt="resim">
+                <div class="card-body">
+                  <h4 class="card-title">{{ haber.title|safe }}</h4>
+                  <p class="card-text">{{ haber.subtitle|safe }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">{{ haber.content|safe }}</li>
+                </ul>
+                <div class="card-body">
+  <!--                <a href="{{ home.url }}" class="card-link"><small>Sayfa Başı</small></a>-->
+                </div>
+              </div><!-- /finest hakkında -->
+        {% else %}
+              <div class="card col-lg-6 my-1"><!-- Eren-İstiklal özgeçmişler -->
+                <img src="{{haber.images.url}}" class="card-img-top rounded-circle" style="width:16rem;" alt="resim">
+                <div class="card-body">
+                  <h4 class="card-title">{{ haber.title|safe }}</h4>
+                  <p class="card-text">{{ haber.subtitle|safe }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">{{ haber.content|safe }}</li>
+                </ul>
+              </div><!--/ Eren-İstiklal özgeçmişler -->
+        {% endif %}
+      {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <div class="container-fluid"><!-- haber ve içeriklerin detay gözlem sayfaları -->
+      <div class="card" style="width: 100%;">
+        <div class="card-body">
+          <h4 class="card-title">{{ haber.title|safe }}</h4>
+          <p class="card-text">{{ haber.subtitle|safe }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">{{ haber.content|safe }}</li>
+          <li class="list-group-item"><small>{{ haber.publishing_date }}</small></li>
+        </ul>
+        <div class="card-body">
+          <a href="{{ home.url }}" class="card-link"><small>Sayfa Başı</small></a>
+          {% if haber.link %}
+            <a href="{{ haber.link }}" class="btn btn-outline-primary btn-sm" role="button"><small>{{haber.button}}</small></a>
+          {% endif %}
+        </div>
+      </div>
+    </div><!--/ haber ve içeriklerin detay gözlem sayfaları -->
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,43 @@
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block baslik %} {{ title }} - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            {% if aktif_kisi %}
+            <h5> {{ aktif_kisi.get_full_name }}  şifrenizi değiştiriyorsunuz</h5>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <h2>Lütfen {{ title }}</h2>
+                {% if exp %}<br>{{exp}}<br>{% endif %}
+                {{ form|crispy }}
+                <input class="btn btn-outline-success" type="submit" value="{{ title }}">
+                {% if title == 'Giriş Yapın' %}
+                <a href="{% url 'accounts:reset' %}">Şifremi unuttum, sıfırlamak istiyorum.</a>
+                {% endif %}
+            </form>
+
+        </div>
+    </div>
+    {% if aktif_kisi %}
+    <div class="row">
+        <div class="col-md-8">
+            <hr>
+            <small>
+                <h6>Parolanızın güvenliği için;</h6>
+                <li>Parolanız diğer kişisel bilgileriniz ile çok benzer olmamalı.</li>
+                <li>Parolanız en az 8 karakter içermeli.</li>
+                <li>Parolanız genelde kullanılan bir parola olmamalı.</li>
+                <li>Parolanız tamamen sayısal ya da tamamen alfabetik olmamalı.</li>
+            </small>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

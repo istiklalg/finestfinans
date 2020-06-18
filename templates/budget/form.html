@@ -1,0 +1,378 @@
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block baslik %} {{ title }} - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+{% if yorumla %}
+
+<div class="container-fluid" id="analysis" xmlns="http://www.w3.org/1999/html">{# görüş ve yorum ekleme #}
+    <div class="row justify-content-center">
+        <h2>{{ title }}</h2>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-lg-2"><!-- tablolar kolonu -->
+        <div class="container-fluid" id="bilanco_verisi">
+            <div class="row" align="center"><!-- resim satırı -->
+                <img src="{% static 'img/muhasebe5.jpg' %}">
+            </div><!-- resim varlık satırı -->
+
+            <div class="row"><!-- dönen varlık satırı -->
+                <table id="donen" >
+                    <thead>
+                        <tr>
+                            <th>DÖNEN VARLIKLAR</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                {% for x, y in donen %}
+                    {% if forloop.counter == 9 or forloop.counter == 14 %}
+                        <tbody>
+                            <td bgcolor="lightgrey">{{ x }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 15 %}
+                        <tbody>
+                            <td bgcolor="grey">{{ x }}</td>
+                            <td bgcolor="grey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 1 or forloop.counter == 3 or forloop.counter == 4 or forloop.counter == 5 or forloop.counter == 6 %}
+                        <tbody>
+                            <td>{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            </div><!-- /dönen varlık satırı -->
+
+            <img src="{% static 'img/bosluk1.bmp' %}">
+
+            <div class="row"><!-- duran varlık satırı -->
+                <table id="duran">
+                    <thead>
+                        <tr>
+                            <th>DURAN VARLIKLAR</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                {% for x, y in duran %}
+                    {% if forloop.counter == 11 or forloop.counter == 18 %}
+                        <tbody>
+                            <td bgcolor="lightgrey">{{ x }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 20 %}
+                        <tbody>
+                            <td bgcolor="grey">{{ x }}</td>
+                            <td bgcolor="grey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 2 or forloop.counter == 3 or forloop.counter == 5 or forloop.counter == 7 or forloop.counter == 9 or forloop.counter == 12 or forloop.counter == 13 or forloop.counter == 14 %}
+                        <tbody>
+                            <td>{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            </div><!-- /duran varlık satırı -->
+
+            <img src="{% static 'img/bosluk2.bmp' %}">
+
+            <div class="row"><!-- KV Borçlar satırı -->
+                <table id="kv_borc">
+                    <thead>
+                        <tr>
+                            <th>KISA VADELİ YABANCI KAYNAKLAR</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                {% for x, y in kv_borc %}
+                    {% if forloop.counter == 1 or forloop.counter == 7 %}
+                        <tbody>
+                            <td bgcolor="lightgrey">{{ x }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 14 %}
+                        <tbody>
+                            <td bgcolor="grey">{{ x }}</td>
+                            <td bgcolor="grey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 4 or forloop.counter == 5 or forloop.counter == 6 or forloop.counter == 11 %}
+                        <tbody>
+                            <td>{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            </div><!-- /KV Borçlar satırı -->
+
+
+            <div class="row"><!-- UV Borçlar satırı -->
+                <table id="uv_borc">
+                    <thead>
+                        <tr>
+                            <th>UZUN VADELİ YABANCI KAYNAKLAR</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                {% for x, y in uv_borc %}
+                    {% if forloop.counter == 10 %}
+                        <tbody>
+                            <td bgcolor="grey">{{ x }}</td>
+                            <td bgcolor="grey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 1 or forloop.counter == 3 or forloop.counter == 4 or forloop.counter == 7 %}
+                        <tbody>
+                            <td>{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            </div><!-- /UV Borçlar satırı -->
+
+            <img src="{% static 'img/bosluk1.bmp' %}">
+
+            <div class="row"><!-- Özkaynaklar satırı -->
+                <table id="ozkaynak">
+                    <thead>
+                        <tr>
+                            <th>ÖZKAYNAKLAR</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                {% for x, y in ozkaynak %}
+                    {% if forloop.counter == 2 or forloop.counter == 9 %}
+                        <tbody>
+                            <td bgcolor="lightgrey">{{ x }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 10 %}
+                        <tbody>
+                            <td bgcolor="grey">{{ x }}</td>
+                            <td bgcolor="grey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 1 or forloop.counter == 4 or forloop.counter == 7 %}
+                        <tbody>
+                            <td>{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            </div><!-- /Özkaynaklar satırı -->
+
+            <img src="{% static 'img/bosluk1.bmp' %}">
+
+            <div class="row"><!-- Gelir Tablosu satırı -->
+                <table id="gelir_tablosu">
+                    <thead>
+                        <tr>
+                            <th>GELİR TABLOSU</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                {% for x, y in gelir_tablosu %}
+                    {% if forloop.counter == 4 or forloop.counter == 9 or forloop.counter == 23 %}
+                        <tbody>
+                            <td bgcolor="lightgrey">{{ x }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 28 %}
+                        <tbody>
+                            <td bgcolor="grey">{{ x }}</td>
+                            <td bgcolor="grey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 8 or forloop.counter == 15 or forloop.counter == 21 %}
+                        <tbody>
+                            <td>{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 22 or forloop.counter == 24 or forloop.counter == 25 %}
+                        <tbody>
+                            <td>{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            </div><!-- /Gelir Tablosu satırı -->
+
+            <img src="{% static 'img/bosluk2.bmp' %}">
+
+            <div class="row"><!-- NIS satırı -->
+                <table id="nis">
+                    <thead>
+                        <tr>
+                            <th> NET İŞLETME SERMAYESİ </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                     <tbody>
+                        <td>NİS</td>
+                        <td align="right">{{ nis }}</td>
+                     </tbody>
+                </table>
+            </div><!-- /NIS satırı -->
+
+            <hr>
+
+            <div class="row"><!-- cost/income satırı -->
+                <table id="cost/income">
+                    <thead>
+                        <tr>
+                            <th>GİDER KARŞILAMA ORANI</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                     <tbody>
+                        <td>COST / INCOME RASYOSU</td>
+                        <td align="right">{{ cost_income }}</td>
+                     </tbody>
+                </table>
+            </div><!-- /cost/income satırı -->
+
+            <hr>
+
+            <div class="row"><!-- finansal göstergeler satırı -->
+                <table id="finansal_gostergeler">
+                    <thead>
+                        <tr>
+                            <th>FİNANSAL GÖSTERGELER</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                {% for x, y in finansal_gostergeler %}
+                        <tbody>
+                            <td>{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                {% endfor %}
+                </table>
+            </div><!-- /finansal göstergeler satırı -->
+
+            <hr>
+
+            <div class="row"><!-- aktivite göstergeleri satırı -->
+                <table id="aktivite_gostergeleri">
+                    <thead>
+                        <tr>
+                            <th>AKTİVİTE GOSTERGELERİ</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                {% for x, y in aktivite_gostergeleri %}
+                        <tbody>
+                            <td>{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                {% endfor %}
+                </table>
+            </div><!-- /aktivite göstergeleri satırı -->
+
+            <hr>
+
+            <div class="row"><!-- karlılık göstergeleri satırı -->
+                <table id="karlilik_gostergeleri">
+                    <thead>
+                        <tr>
+                            <th>KARLILIK GÖSTERGELERİ</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                {% for x, y in karlilik_gostergeleri %}
+                        <tbody>
+                            <td>{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                {% endfor %}
+                </table>
+            </div><!-- karlılık göstergeleri satırı -->
+
+            <hr>
+
+        </div>
+        </div>
+        <div class="col-lg-10"><!-- form verisi -->
+        <div class="container-fluid" id="form_verisi">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% crispy form %}
+            </form>
+        </div>
+        </div><!-- /form verisi -->
+    </div>
+</div>{# /görüş ve yorum ekleme #}
+
+{% else %}
+
+<body style="position:relative;" data-spy="scroll" data-target="#skontlar" data-offset="20">{# create and update #}
+<div class="container" id="yeni_ekle">{# create ve update formları ve navigasyonu #}
+
+    <nav id="skontlar" class="navbar navbar-light bg-light fixed-bottom">{# create ve update formları için navigasyon #}
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a href="#div_id_grup_ismi" class="nav-link">Dönen Varlık Hesapları</a>
+            </li>
+        </ul>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a href="#div_id_L198" class="nav-link">Duran Varlık Hesapları</a>
+            </li>
+        </ul>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a href="#div_id_L298" class="nav-link">KV Yabancı Kaynak Hesapları</a>
+            </li>
+        </ul>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a href="#div_id_L397" class="nav-link">UV Yabancı Kaynak Hesapları</a>
+            </li>
+        </ul>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a href="#div_id_L496" class="nav-link">Ökaynak Hesapları</a>
+            </li>
+        </ul>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a href="#div_id_L590" class="nav-link">Gelir Tablosu Hesapları</a>
+            </li>
+        </ul>
+    </nav>{# /create ve update formları için navigasyon #}
+
+    <div class="row justify-content-center">
+        <h2>{{ title }}<hr></h2>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col">{# create ve update formları #}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% crispy form %}
+            </form>
+        </div>{# /create ve update formları #}
+    </div>
+
+</div>{# /create ve update formları ve navigasyonu #}
+</body>{# /create and update #}
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,97 @@
+
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block baslik %} Kredi Tercihi - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+
+{% if secim != None %}{{ secim }} için {{ data }}{% endif %}<br>
+
+
+    <div class="container">
+
+            <form method="post">
+                {% csrf_token %}
+                <select name="kredi_tipi">{% for i in liste %} <option>{{i}} {% endfor %}</select>
+                <input class="btn btn-sm btn-outline-info" type="submit" value="Seç">
+            </form>
+    </div>
+
+    <div class="container">
+            {% if secim == 'İhtiyaç' or secim == 'Taşıt' %}
+                <hr>
+                <form method="post"  enctype="multipart/form-data" action="/haber/kredi_hesapla/" name="{{secim}}">
+                    {% csrf_token %}
+                    {% crispy form %}
+                </form>
+                <small> - Konut kredileri hariç bireysel kredilerde %15 KKDF ve %5 BSMV yer almaktadır.<br>
+                        - Vade olarak taksit sayısını yazınız.<br>
+                        - Aylık faiz oranı giriniz (Bireysel kredilerde size söylenen faiz oranı aylıktır).</small>
+
+            {% elif secim == 'Konut' %}
+                <hr>
+                <form method="post"  enctype="multipart/form-data" action="/haber/kredi_hesapla/" name="{{secim}}">
+                    {% csrf_token %}
+                    {% crispy form %}
+                </form>
+                <small> - Konut kredilerinde KKDF ve BSMV yer almamaktadır.<br>
+                        - Vade olarak taksit sayısını yazınız.<br>
+                        - Aylık faiz oranı giriniz (Bireysel kredilerde size söylenen faiz oranı aylıktır).</small>
+
+
+            {% elif secim == 'Taksitli Ticari' %}
+                <hr>
+                <form method="post"  enctype="multipart/form-data" action="/haber/kredi_hesapla/" name="{{secim}}">
+                    {% csrf_token %}
+                    {% crispy form %}
+                </form>
+                <small> - Taksitli ticari kredilerde %5 BSMV yer almaktadır.<br>
+                        - Vade olarak taksit sayısını yazınız.<br>
+                        - Aylık faiz oranı giriniz (Taksitli ticari kredilerde size söylenen faiz oranı aylıktır).</small>
+
+
+            {% elif secim == 'İşyeri' or secim == 'Ticari Taşıt' %}
+                <hr>
+                <form method="post"  enctype="multipart/form-data" action="/haber/kredi_hesapla/" name="{{secim}}">
+                    {% csrf_token %}
+                    {% crispy form %}
+                </form>
+                <small> - Ticari işyeri kredilerinde %5 BSMV yer almaktadır.<br>
+                        - Vade olarak taksit sayısını yazınız.<br>
+                        - Aylık faiz oranı giriniz (Ticari tahsitli kredilerde size söylenen faiz oranı aylıktır).</small>
+
+
+            {% elif secim == 'İskonto' %}
+                <hr>
+                <form method="post"  enctype="multipart/form-data" action="/haber/kredi_hesapla/" name="{{secim}}">
+                    {% csrf_token %}
+                    {% crispy form %}
+                </form>
+                <small> - Ticari işyeri kredilerinde %5 BSMV yer almaktadır.<br>
+                        - Vade olarak kredinin kaç gün sonra ödeneceğini giriniz.
+                            Çekli işlemler için çeklerin ortalama vadesini giriniz.<br>
+                        - Yıllık faiz oranı giriniz.</small>
+
+            {% elif secim == 'Spot' %}
+                <hr>
+                <form method="post"  enctype="multipart/form-data" action="/haber/kredi_hesapla/" name="{{secim}}">
+                    {% csrf_token %}
+                    {% crispy form %}
+                </form>
+                <small> - Ticari işyeri kredilerinde %5 BSMV yer almaktadır.<br>
+                        - Vade olarak kredinin kaç gün sonra ödeneceğini giriniz.<br>
+                        - Yıllık faiz oranı giriniz.</small>
+
+
+            {% else %}
+                <hr>
+                <h5>Yeni hesaplama için seçim yapın</h5>
+
+            {% endif %}
+    </div>
+
+{% endblock %}

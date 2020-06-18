@@ -1,0 +1,37 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block baslik %} Haberler - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+<div class="container-fluid">
+<div class="card" style="width: 100%;">
+<!--  <img src="{{haber.images.url}}" class="card-img-top" alt="resim">-->
+  <div class="card-body">
+    <h4 class="card-title">{{ mesaj.title|safe }}</h4>
+    <h5 class="card-title">{{ mesaj.title|safe }}<small>  - {{ mesaj.id }}</small></h5>
+    <p class="card-text">{{ mesaj.name }}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+<!--    <li class="list-group-item">{{ haber.subtitle|safe }}</li>-->
+    <li class="list-group-item">{{ mesaj.content|safe }}</li>
+    <li class="list-group-item"><small>{{ mesaj.date }}</small></li>
+  </ul>
+  <div class="card-body">
+    <a href="" class="card-link"><small>Sayfa Başı</small></a>
+    {% if mesaj.files %}
+    <a href="{{ mesaj.files.url }}" class="card-link">{{ mesaj.files }}</a>
+    {% endif %}
+    {% if aktif_kisi.is_superuser %}
+    <a href="{{ mesaj.get_update_url }}" class="card-link">CEVAPLA</a>
+    <a href="{{ mesaj.get_delete_url }}" class="card-link">SİL</a>
+    {% endif %}
+  </div>
+</div>
+</div>
+
+{% endblock %}

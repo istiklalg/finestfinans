@@ -1,0 +1,425 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block baslik %}{% if sayi %}{{ budget1.tax_title }}{% elif company_count %}{{grup}} grup şirketleri{% endif %} - Kıyaslamalı Spread - {{ block.super }}{% endblock %}
+
+{% block govde %}
+{% if everything_ok %}
+    <body>
+    {% if sayi %}
+        <hr>
+        <h5> {{ budget1.tax_title }} <small> firmasının {{ sayi }} dönem karşılaştırmalı spread özet tablosu</small></h5><br>
+        <h6>Karşılaştırılan dönmeler : {{ budget1.period }}  /  {{ budget2.period }} {% if budget3 %} /  {{ budget3.period }} {% endif %}</h6>
+        <hr>
+        <small>
+        {% for budget in budgets %}
+            {{ budget.tax_title }} - {{ budget.tax_number }} - {{ budget.period }} - {{ budget.saving_date }} <br>
+        {% endfor %}
+        </small>
+        <hr>
+    {% elif company_count %}
+        <hr>
+        <h5> {{ grup }} <small> şirketler grubunun karşılaştırmalı grup spread özet tablosu
+            - (Toplam {{ company_count }} şirket / Seçilen {{ period_count }} dönem)</small></h5>
+        <hr>
+        <h6></h6>
+        <h7>Karşılaştırılan dönmeler : {{ budget1.period }}  /  {{ budget2.period }} {% if budget3 %} /  {{ budget3.period }} {% endif %}</h7><br>
+        <h7>Grubun şirketleri :</h7>
+        <small>
+        {% for company in group_companies %}
+            {{ company }},
+        {% endfor %}
+        </small>
+        <hr>
+    {% endif %}
+
+    <div class="container-fluid" align="center" name="compare">
+        <div class="row">
+    <!--        Aktife ait tablo kolonu-->
+            <div class="col-lg-6">
+                <table class="table-hover col-lg-12">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Aktif<hr></th>
+                        <th scope="col">{{ budget1.period }}<hr></th>
+                        <th scope="col">{{ budget2.period }}<hr></th>
+                        {% if budget3 %}
+                        <th scope="col">{{ budget3.period }}<hr></th>
+                        {% endif %}
+
+                    </tr>
+                </thead>
+
+                {% if budget3 %}
+                {% for e, x, y, z  in A %}
+                    {% if forloop.counter == 9 or forloop.counter == 14 or forloop.counter == 15 or forloop.counter == 33 or forloop.counter == 35 %}
+                        <tbody>
+                            <td bgcolor="lightgrey">{{ e }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ x }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ z }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 36 %}
+                        <tbody>
+                            <td bgcolor="grey">{{ e }}</td>
+                            <td bgcolor="grey" align="right">{{ x }}</td>
+                            <td bgcolor="grey" align="right">{{ y }}</td>
+                            <td bgcolor="grey" align="right">{{ z }}</td>
+                        </tbody>
+                    {% else %}
+                        <tbody>
+                            <td>{{ e }}</td>
+                            <td align="right">{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                            <td align="right">{{ z }}</td>
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+                {% else %}
+                {% for e, x, y  in A %}
+                    {% if forloop.counter == 9 or forloop.counter == 14 or forloop.counter == 15 or forloop.counter == 33 or forloop.counter == 35 %}
+                        <tbody>
+                            <td bgcolor="lightgrey">{{ e }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ x }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 36 %}
+                        <tbody>
+                            <td bgcolor="grey">{{ e }}</td>
+                            <td bgcolor="grey" align="right">{{ x }}</td>
+                            <td bgcolor="grey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% else %}
+                        <tbody>
+                            <td>{{ e }}</td>
+                            <td align="right">{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+                {% endif %}
+                </table>
+                <hr>
+            </div>
+    <!--        Pasife ait tablo kolonu-->
+            <div class="col-lg-6">
+                <table class="table-hover col-lg-12">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Pasif<hr></th>
+                        <th scope="col">{{ budget1.period }}<hr></th>
+                        <th scope="col">{{ budget2.period }}<hr></th>
+                        {% if budget3 %}
+                        <th scope="col">{{ budget3.period }}<hr></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                {% if budget3 %}
+                {% for e, x, y, z  in P %}
+                    {% if forloop.counter == 14 or forloop.counter == 24 or forloop.counter == 25 or forloop.counter == 35 %}
+                        <tbody>
+                            <td bgcolor="lightgrey">{{ e }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ x }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ z }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 36 %}
+                        <tbody>
+                            <td bgcolor="grey">{{ e }}</td>
+                            <td bgcolor="grey" align="right">{{ x }}</td>
+                            <td bgcolor="grey" align="right">{{ y }}</td>
+                            <td bgcolor="grey" align="right">{{ z }}</td>
+                        </tbody>
+                    {% else %}
+                        <tbody>
+                            <td>{{ e }}</td>
+                            <td align="right">{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                            <td align="right">{{ z }}</td>
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+                {% else %}
+                {% for e, x, y  in P %}
+                    {% if forloop.counter == 14 or forloop.counter == 24 or forloop.counter == 25 or forloop.counter == 35 %}
+                        <tbody>
+                            <td bgcolor="lightgrey">{{ e }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ x }}</td>
+                            <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% elif forloop.counter == 36 %}
+                        <tbody>
+                            <td bgcolor="grey">{{ e }}</td>
+                            <td bgcolor="grey" align="right">{{ x }}</td>
+                            <td bgcolor="grey" align="right">{{ y }}</td>
+                        </tbody>
+                    {% else %}
+                        <tbody>
+                            <td>{{ e }}</td>
+                            <td align="right">{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endif %}
+                {% endfor %}
+                {% endif %}
+                </table>
+                <hr>
+            </div>
+        </div>
+
+        <div class="row">
+    <!--    Boş Satır-->
+            <hr>
+        </div>
+    </div>
+
+
+    <div class="container-fluid" align="center" name="compare">
+        <div class="row">
+    <!--        Gelir Tablosuna ait tablo kolonu-->
+            <div class="col-lg-6">
+                <table class="table-hover col-lg-12">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Gelir Tablosu<hr></th>
+                        <th scope="col">{{ budget1.period }}<hr></th>
+                        <th scope="col">{{ budget2.period }}<hr></th>
+                        {% if budget3 %}
+                        <th scope="col">{{ budget3.period }}<hr></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                {% if budget3 %}
+                {% for e, x, y, z  in G %}
+                    {% if forloop.counter == 4 or forloop.counter == 9 or forloop.counter == 23 %}
+                    <tbody>
+                        <td bgcolor="lightgrey">{{ e }}</td>
+                        <td bgcolor="lightgrey" align="right">{{ x }}</td>
+                        <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                        <td bgcolor="lightgrey" align="right">{{ z }}</td>
+                    </tbody>
+                    {% elif forloop.counter == 28 %}
+                    <tbody>
+                        <td bgcolor="grey">{{ e }}</td>
+                        <td bgcolor="grey" align="right">{{ x }}</td>
+                        <td bgcolor="grey" align="right">{{ y }}</td>
+                        <td bgcolor="grey" align="right">{{ z }}</td>
+                    </tbody>
+                    {% else %}
+                    <tbody>
+                        <td>{{ e }}</td>
+                        <td align="right">{{ x }}</td>
+                        <td align="right">{{ y }}</td>
+                        <td align="right">{{ z }}</td>
+                    </tbody>
+                    {% endif %}
+                {% endfor %}
+                {% else %}
+                {% for e, x, y  in G %}
+                    {% if forloop.counter == 4 or forloop.counter == 9 or forloop.counter == 23 %}
+                    <tbody>
+                        <td bgcolor="lightgrey">{{ e }}</td>
+                        <td bgcolor="lightgrey" align="right">{{ x }}</td>
+                        <td bgcolor="lightgrey" align="right">{{ y }}</td>
+                    </tbody>
+                    {% elif forloop.counter == 28 %}
+                    <tbody>
+                        <td bgcolor="grey">{{ e }}</td>
+                        <td bgcolor="grey" align="right">{{ x }}</td>
+                        <td bgcolor="grey" align="right">{{ y }}</td>
+                    </tbody>
+                    {% else %}
+                    <tbody>
+                        <td>{{ e }}</td>
+                        <td align="right">{{ x }}</td>
+                        <td align="right">{{ y }}</td>
+                    </tbody>
+                    {% endif %}
+                {% endfor %}
+                {% endif %}
+                </table>
+            </div>
+    <!--        Oran analizine ait tablo kolonu-->
+            <div class="col-lg-6">
+                <table class="table-hover col-lg-12">
+                <thead class="thead-dark" align="center">
+                    <tr>
+                        <th scope="col">ORANLAR<hr></th>
+                        <th scope="col"> </th>
+                    </tr>
+                </thead>
+                </table>
+                <table class="table-hover col-lg-12">
+                <thead class="thead-dark" align="center">
+                    <tr>
+                        <th scope="col">FİNANSAL GÖSTLER<hr></th>
+                        <th scope="col"><small>{{ budget1.period }}</small></th>
+                        <th scope="col"><small>{{ budget2.period }}</small></th>
+                        {% if budget3 %}
+                        <th scope="col"><small>{{ budget3.period }}</small></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                {% if budget3 %}
+                    {% for e, x, y, z  in FG %}
+                        <tbody>
+                            <td>{{ e }}</td>
+                            <td align="right">{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                            <td align="right">{{ z }}</td>
+                        </tbody>
+                    {% endfor %}
+                {% else %}
+                    {% for e, x, y  in FG %}
+                        <tbody>
+                            <td>{{ e }}</td>
+                            <td align="right">{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endfor %}
+                {% endif %}
+                    <tbody>
+                        <td><hr></td>
+                        <td> </td>
+                    </tbody>
+                </table>
+                <table class="table-hover col-lg-12">
+                <thead class="thead-dark" align="center">
+                    <tr>
+                        <th scope="col">AKTİVİTE GÖSTERGELERİ<hr></th>
+                        <th scope="col"><small>{{ budget1.period }}</small></th>
+                        <th scope="col"><small>{{ budget2.period }}</small></th>
+                        {% if budget3 %}
+                        <th scope="col"><small>{{ budget3.period }}</small></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                {% if budget3 %}
+                    {% for e, x, y, z  in AG %}
+                        <tbody>
+                            <td>{{ e }}</td>
+                            <td align="right">{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                            <td align="right">{{ z }}</td>
+                        </tbody>
+                    {% endfor %}
+                {% else %}
+                    {% for e, x, y  in AG %}
+                        <tbody>
+                            <td>{{ e }}</td>
+                            <td align="right">{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endfor %}
+                {% endif %}
+                <tbody>
+                    <td><hr></td>
+                    <td> </td>
+                </tbody>
+                </table>
+                <table class="table-hover col-lg-12">
+                <thead class="thead-dark" align="center">
+                    <tr>
+                        <th scope="col">KARLILIK GÖSTERGELERİ<hr></th>
+                        <th scope="col"><small>{{ budget1.period }}</small></th>
+                        <th scope="col"><small>{{ budget2.period }}</small></th>
+                        {% if budget3 %}
+                        <th scope="col"><small>{{ budget3.period }}</small></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                {% if budget3 %}
+                    {% for e, x, y, z  in KG %}
+                        <tbody>
+                            <td>{{ e }}</td>
+                            <td align="right">{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                            <td align="right">{{ z }}</td>
+                        </tbody>
+                    {% endfor %}
+                {% else %}
+                    {% for e, x, y  in KG %}
+                        <tbody>
+                            <td>{{ e }}</td>
+                            <td align="right">{{ x }}</td>
+                            <td align="right">{{ y }}</td>
+                        </tbody>
+                    {% endfor %}
+                {% endif %}
+                <tbody>
+                    <td><hr></td>
+                    <td> </td>
+                </tbody>
+                </table>
+                <table class="table-hover col-lg-12">
+                <thead class="thead-dark" align="right">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col"><small>{{ budget1.period }}</small></th>
+                        <th scope="col"><small>{{ budget2.period }}</small></th>
+                        {% if budget3 %}
+                        <th scope="col"><small>{{ budget3.period }}</small></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <hr>
+                    <td>NET İŞLETME SERMAYESİ</td>
+                    <td scope="col" align="right">{{ period1.nis }}</td>
+                    <td scope="col" align="right">{{ period2.nis }}</td>
+                    {% if budget3 %}
+                    <td scope="col" align="right">{{ period3.nis }}</td>
+                    {% endif %}
+                </tbody>
+                <tbody>
+                    <td>COST / INCOME (%)</td>
+                    <td scope="col" align="right">{{ period1.mg1 }}</td>
+                    <td scope="col" align="right">{{ period2.mg1 }}</td>
+                    {% if budget3 %}
+                    <td scope="col" align="right">{{ period3.mg1 }}</td>
+                    {% endif %}
+                </tbody>
+                <tbody>
+                    <td></td>
+                    <td></td>
+                </tbody>
+                </table>
+                <hr>
+        </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" align="center">
+        <div class="row">
+            <div class="col-lg-6">
+                <hr>
+                <a href="{{ budget1.get_lists_url }}" class="btn btn-outline-success  btn-sm" role="button">&laquo;   {{ budget1.tax_title }}  MALİ VERİLERİ LİSTESİ</a>
+                {% if grup %}
+                <br><hr>
+                <a href="{{ budget1.get_group_url }}" class="btn btn-outline-success  btn-sm" role="button">&laquo;   {{ grup }} GRUBU MALİ VERİLERİ LİSTESİ</a>
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <hr>
+                <a href="{{ budget1.get_spread_url }}" class="btn btn-outline-success  btn-sm" role="button"> {{ budget1.tax_title }} için {{ budget1.period }} dönem spread   &raquo;</a><br>
+                <hr>
+                <a href="{{ budget2.get_spread_url }}" class="btn btn-outline-success  btn-sm" role="button"> {{ budget2.tax_title }} için {{ budget2.period }} dönem spread   &raquo;</a><br>
+                {% if budget3 %}
+                <hr>
+                <a href="{{ budget3.get_spread_url }}" class="btn btn-outline-success  btn-sm" role="button"> {{ budget3.tax_title }} için {{ budget3.period }} dönem spread   &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <hr>
+            <hr>
+        </div>
+    </div>
+
+    </body>
+{% else %}
+
+{% endif %}
+{% endblock %}
+

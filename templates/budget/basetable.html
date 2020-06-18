@@ -1,0 +1,90 @@
+
+
+
+{% load i18n %}
+
+
+<div class="container" id="basetables" name="temel_tablo">
+    <div class="row my-4">
+        <div class="card-group w-100"><!-- bilanço -->
+          <div class="card"><!-- aktif -->
+            <div class="card-header" align="center">AKTİF HESAPLAR</div>
+            <div class="card-body">
+              <table class="table table-borderless">
+                  <tbody>
+                  {% for x, y in aktifler %}
+                    <tr>
+                        <td class="justfy-content-left">{{x}}</td>
+                        <td class="justfy-content-right">{{y}}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <table class="table table-borderless">
+                  <tbody>
+                    <tr>
+                        <td class="justfy-content-left">AKTİF TOPLAM</td>
+                        <td class="justfy-content-right">{{aktiftoplam}}</td>
+                    </tr>
+                  </tbody>
+              </table>
+            </div>
+          </div><!-- /aktif -->
+          <div class="card"><!-- pasif -->
+            <div class="card-header" align="center">PASİF HESAPLAR</div>
+            <div class="card-body">
+              <table class="table table-borderless">
+                  <tbody>
+                  {% for x, y in pasifler %}
+                    <tr>
+                        <td class="justfy-content-left">{{x}}</td>
+                        <td class="justfy-content-right">{{y}}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <table class="table table-borderless">
+                  <tbody>
+                    <tr>
+                        <td class="justfy-content-left">PASİF TOPLAM</td>
+                        <td class="justfy-content-right">{{pasiftoplam}}</td>
+                    </tr>
+                  </tbody>
+              </table>
+            </div>
+          </div><!-- /pasif -->
+        </div><!-- /bilanço -->
+    </div>
+    <div class="row my-4">
+        <div class="card w-75 mx-auto"><!-- gelir tablosu -->
+            <div class="card-header" align="center">GELİR TABLOSU</div>
+            <div class="card-body">
+              <table class="table table-borderless">
+                  <tbody>
+                  {% for x, y in gelir_tablosu %}
+                    <tr>
+                        <td class="justfy-content-left">{{x}}</td>
+                        <td class="justfy-content-right">{{y}}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <table class="table table-borderless">
+                  <tbody>
+                    <tr>
+                        <td class="justfy-content-left">DÖNEM NET KARI / ZARARI</td>
+                        <td class="justfy-content-right">{{kar_zarar}}</td>
+                    </tr>
+                  </tbody>
+              </table>
+            </div>
+        </div><!-- /gelir tablosu -->
+    </div>
+</div>
+

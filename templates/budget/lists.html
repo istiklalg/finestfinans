@@ -1,0 +1,78 @@
+
+{% extends 'base.html' %}
+
+{% block baslik %}{% if vergi %}{{ vergi }}{% elif grup %}{{ grup }}{% endif %} - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+<div class="container">
+    <form action="/bilanco/compare/" method="POST">
+    {% csrf_token %}
+        <div class="row">
+            {% if gruplist %}
+            <div class="col-lg-10">
+            {% endif %}
+              {% if grup %}
+              <h5> {{ grup }} <small> grubu şirketlerinin sisteme girilmiş mali verileri</small></h5>
+              {% elif unvan %}
+              <h5> {{ unvan }} <small> firmasının sisteme girilmiş mali verileri</small></h5>
+              {% endif %}
+              <table class="table table-hover col-lg-12">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col"> </th>
+                        <th scope="col">Ünvan</th>
+                        <th scope="col">Vergi No</th>
+                        <th scope="col">Grubu</th>
+                        <th scope="col">Mali Dönem</th>
+                        <th scope="col">Kayıt Tarihi</th>
+                        <th scope="col">Ekli Dosya</th>
+                    </tr>
+                </thead>
+                {% for budget in lists %}
+                <tbody>
+                    <td><input type="checkbox" value="{{ budget.id }}" name="checkbox"/></td>
+                    <td><a href="{{ budget.get_basetable_url }}" title="Temel Tablo Görünümü">{{ budget.tax_title }}</a></td>
+                    <td><a href="{{ budget.get_absolute_url }}" title="Detaylı Kalem Görünümü">{{ budget.tax_number }}</a></td>
+                    <td><a href="{{ budget.get_group_url }}">{{ budget.grup_ismi }}</a></td>
+                    <td>{{ budget.period }}</td>
+                    <td>{{ budget.saving_date }}</td>
+                    {% if budget.files %}
+                    <td><a href="{{ budget.files.url }}">{{budget.files}}</a></td>
+                    {% else %}
+                    <td>Ek Yok</td>
+                    {% endif %}
+                </tbody>
+                {% endfor %}
+              </table>
+              <a href="{% url 'budget:companies' %}" class="btn btn-outline-success  btn-sm" role="button">&laquo;    FİRMALAR LİSTESİ</a>
+              {% if secili %}
+              <a href="{{ secili.get_lists_url }}" class="btn btn-outline-secondary  btn-sm" role="button">LİSTEYE GERİ DÖN</a>
+
+              {% endif %}
+              <input type="submit" role="button" class="btn btn-outline-primary  btn-sm" value="KARŞILAŞTIRMALI SPREAD &raquo">
+            </div>
+        {% if gruplist %}
+            <div class="col-lg-2"><small>
+               <h6> {{ grup }} <br><small> grubu şirketleri</small></h6>
+               <table class="table table-hover col-lg-12">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Ünvan</th>
+                        </tr>
+                    </thead>
+                    {% for x in gruplist %}
+                    <tbody>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{ x }}</td>
+                    </tbody>
+                    {% endfor %}
+                  </table></small>
+                  <a href="{{ secili.get_groupspread_url }}" class="btn btn-outline-secondary  btn-sm" role="button">GRUP SPREAD GÖR</a>
+            </div>
+        {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

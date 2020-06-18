@@ -1,0 +1,62 @@
+
+{% extends 'base.html' %}
+
+{% block baslik %} Tüm Kayılarımın Listesi - {{ block.super }} {% endblock %}
+
+{% block govde %}
+
+<div class="container">
+    <div class="row">{{ note }}</div>
+    <div class="row">
+    {% for budget in sample %}
+              <div class="col-sm-12 col-md-6 col-lg-6">
+                  <div class="card shadow my-3">
+                    <div class="card-header">{{ budget.grup_ismi|truncatechars:40 }} Şirketler Grubu</div>
+                    <ul class="list-group list-group-flush">
+                        {% if request.user.is_superuser %}
+                            <li class="list-group-item text-muted"><small class="text-secondary">KAYDEDEN KULLANICI : {{ budget.user.username }}</small></li>
+                        {% endif %}
+    <!--                  <li class="list-group-item">VKN : {{ budget.tax_number }}</li>-->
+    <!--                  <li class="list-group-item">DÖNEM : {{ budget.period }}</li>-->
+    <!--                  <li class="list-group-item text-muted"><small class="text-success">KAYIT : {{ budget.saving_date }} ({{ budget.saving_date|timesince }} önce)</small></li>-->
+                    </ul>
+                      <p>
+                          <hr>
+    <!--                      <a href="{{ budget.get_absolute_url }}" class="btn btn-outline-primary btn-sm" role="button"><small>İNCELE</small></a>-->
+                          <a href="{{ budget.get_groupfirms_url }}" class="btn btn-outline-info" role="button"><small>GRUBUN FİRMALARI</small></a>
+                          <a href="{{ budget.get_group_url }}" class="btn btn-outline-info" role="button"><small>GRUP MALİ VERİLERİ</small></a>
+    <!--                      <a href="{{ budget.get_group_url }}" class="btn btn-outline-info btn-sm" role="button"><small>{{ budget.grup_ismi|truncatechars:8 }} grubu</small></a>          -->
+    <!--                      <a href="{{ budget.get_lists_url }}" class="btn btn-outline-primary btn-sm" role="button"><small>FİRMA MALİ VERİLERİ</small></a>-->
+    <!--                      <a href="{{ budget.get_report_url }}" class="btn btn-outline-primary btn-sm" role="button"><small>RAPORLA</small></a>-->
+    <!--                      <br><hr>-->
+    <!--                      <a href="{{ budget.get_analysis_url }}" class="btn btn-outline-warning btn-sm" role="button"><small>GÖRÜŞ / YORUM / BİLGİLER</small></a>-->
+    <!--                      <a href="{{ budget.get_update_url }}" class="btn btn-outline-warning btn-sm" role="button"><small>GÜNCELLE</small></a>-->
+    <!--                      <a href="{{ budget.get_delete_url }}" class="btn btn-danger btn-sm" role="button" title="Kaydı tamamen silmenizi sağlar!"><small>KAYDI SİL !!</small></a>-->
+    <!--                      <br>-->
+                      </p>
+                  </div>
+              </div>
+    {% endfor %}
+    </div>
+    <hr>
+    <div class="pagination">
+        <span class="step-links">
+            {% if sample.has_previous %}
+                <a href="?page=1">&laquo; İlk Sayfa </a>/
+                <a href="?page={{ sample.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"> önceki </a>/
+            {% endif %}
+
+            <span class="current">
+                <i>{{ sample.paginator.num_pages }} sayfadan {{ sample.number }}. si</i>
+            </span>
+
+            {% if sample.has_next %}
+                /<a href="?page={{ sample.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"> sonraki </a>
+                /<a href="?page={{ sample.paginator.num_pages }}"> Son Sayfa &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    </div>
+</div>
+
+{% endblock %}

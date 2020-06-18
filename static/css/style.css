@@ -1,0 +1,74 @@
+
+/* body-navbar senkronu için ayarlar */
+
+body {
+    padding-top: 110px;
+}
+
+footer {
+    background-color: light-grey;
+}
+
+/* linklerin tıklanıp tıklanmadığına ilişkin biçimlendirme bölümü */
+
+a.okundumu:link {
+    color:red;
+    font-weight:bold;
+}
+
+/* input alanlarında geçerli ve geçersiz değerler için çerçeve rengi ataması yaptığımız bölüm */
+
+input[name="tip"]{
+    border:none;
+}
+
+input[name="tutar"]:valid, input[name="faiz"]:valid, input[name="vade"]:valid{
+    border-color: green;
+}
+
+input[name="tutar"]:invalid, input[name="faiz"]:invalid, input[name="vade"]:invalid{
+    border-color: orange;
+}
+
+div.col-lg-5 input:invalid {
+    border-color: orange;
+}
+
+/* buton ve linkler için semboller eklediğimiz bölüm */
+
+button[name="update"]::before{
+    content: "\1F58A   "
+}
+
+button[name="delete"]::before{
+    content: "\1F5D1   "
+}
+
+a[name="update"]::after{
+    content: "  \270F"
+}
+
+a[name="delete"]::after{
+    content: "  \1F5D1"
+}
+
+a[name="logout"]::before{
+    content: " \270B  "
+}
+
+button[name="logoutcancel"]::before{
+    content: " \274C  "
+}
+
+/* arkaplan resimleri atayacağımız alanları berilediğimiz bölüm */
+
+div[name="rapor"], div[name="taksitli"]{
+    background:url(/static/img/LOGO-HAYALET.jpg) center repeat-y;
+    /* background-attachment: fixed; */
+}
+
+/* arkaplan resmini engelleyen elementler için tranparency tanımları */
+
+img[name="reportimage"]{
+    opacity: 0.40;
+}
